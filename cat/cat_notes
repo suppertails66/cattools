@@ -1,0 +1,140 @@
+
+data:
+  main font graphics: 0x8018 (compressed, 1587 bytes)
+  title screen tilemap: 0x2BD8 (compressed, 518 bytes -> 884 bytes)
+    - starting from "CITY ADVENTURE", PPU 0x2084); continues on
+      into attribute table
+  title screen graphics 1: 0x33F9 (compressed, 670 bytes)
+  title screen graphics 2: 0x3697 (compressed, 1808 bytes)
+  screen blank tilemap: 0x2AD3 (compressed, 0xD bytes)
+  
+dialogue:
+  967: このまちに　くるのは　はし゛めてかい、あふ゛ないから　いいものをあけ゛るよ
+    ------------------------------------------
+    - pointer table at 8b8 -- 0x57 entries
+      - pointer to this table is at 3
+    - setup routine: 1D6AE?
+    ------------------------------------------
+    - written at 1D706
+  !!! last three lines are not in pointer table!
+  !!! are these hardcoded somewhere? or just not used?
+        ６ひ゜きの　ぬしは　それそ゛れ　たおすのに　ひつような　あいてむか゛ある[END]
+        たへ゛ものは　もっていると　いいことか゛　あるよ[END]
+        ここは　まちの　まんなか　あたりた゛よ[END]
+  
+status bar messages:
+  1514C: ねえねえ　ふたりとも　りゅっくさっくを　かったら
+    ------------------------------------------
+    - pointer table at 150F7 -- 0x1A entries
+    - setup routine: 15073
+    ------------------------------------------
+    - written in 1C47B, from RAM $0700
+    - written to RAM at 15095
+      - 17A77 sets up read address for message with index A
+
+status bar labels:
+  - around 14f2b -- uncompressed
+  
+password:
+  17450: たつやの　あいことば and other password prompts
+    ------------------------------------------
+    - print setup routine at 17050
+    - pointer table for 3 strings at 1744A
+    ------------------------------------------
+    - read at 1C255, from ($23)
+    
+attribute maps for indoor scenes w/ dialogue (0x28 bytes each,
+written to PPU 23D0):
+  house: 1a432
+
+
+// These lines are at the end of the script, but aren't in the pointer table.
+// Don't know if there are hardcoded references to them somewhere, or if
+// they're just outright unused.
+//６ひ゜きの　ぬしは　それそ゛れ　たおすのに　ひつような　あいてむか゛ある[END]
+//たへ゛ものは　もっていると　いいことか゛　あるよ[END]
+//ここは　まちの　まんなか　あたりた゛よ[END]
+
+memory:
+  003C: current bank number
+  005F: during gameplay, if high bit set, dialogue message is pending?
+    - if bit 4 set, ? pending dialogue message won't be drawn, other effects?
+      - possibly used to ensure too many drawing events don't occur on the
+        same vblank interval?
+  00E2: ? graphics decompression?
+  00F8: graphics decompression: MAINCMD
+    - if two sequential bytes of this value are read, end of input
+    - if one byte of this value is read, and the next value is not the same,
+      update MAINCMD and SUBCMD:
+      - subbyte 0 is written to SUBCMD
+      - subbyte 1 is written to MAINCMD
+      - and decompression continues
+  00F9: graphics decompression: SUBCMD
+    - if a byte of this value is read, toggle the run mode flag
+  00FA: graphics decompression: run value
+  00FB: graphics decompression: run flag
+    - bit 0 = if unset, fill mode; otherwise, run mode
+  00FC-00FD: graphics decompression source address?
+  0721: during gameplay, if high bit set, low 7 bits are index of status
+        message that needs to be displayed?
+  0793: change in tatsuya's hp this frame, low byte
+  0794: change in kazuya's hp this frame, low byte
+  0795: change in tatsuya's hp this frame, high byte
+  0796: change in kazuya's hp this frame, high byte
+  07B8: tatsuya's HP, low byte
+  07B9: kazuya's HP, low byte
+  07BA: tatsuya's HP, high byte
+  07BB: kazuya's HP, high byte
+  078E: ?
+  
+routines:
+  17050: print prompts on password screen
+  1C003: call a routine via jump table
+    * A = index in table
+    * X = parameter 1
+    * Y = parameter 2
+    * $E2 = parameter 0
+    The function with the given index is called with A as parameter 0,
+    X as parameter 1, and Y as parameter 2.
+    Additional parameters are routine-dependent?
+  1C237: read tilemap to memory?
+  1C825: switch bank (A = number)
+  1E384: decompress graphics
+    * X = ? goes to $078E
+    * Y:
+      * low 2 bits = bank number
+      * high 2 bits = if nonzero, call alternate routine from table at
+        ($8000 + value)
+    * $00E2 = parameter
+      * low 3 bits = ?
+      * high 5 bits = graphic subindex? (from table at $8000)
+
+1C141 = jump table for routine 1C12E
+    
+1C82C = bank change table
+
+1E3F7 = graphics decompression?
+  - sample data: ROM ~8018
+
+graphics compression format:
+  1b initial SUBCMD
+  1b initial MAINCMD
+  *data*
+    * init RUNFLAG to 0
+    * loop:
+      * fetch a byte
+      * if byte is equal to MAINCMD:
+        * fetch another byte
+        * if byte is equal to MAINCMD, terminate decompression
+        * otherwise:
+          * set SUBCMD to the previously fetched byte
+          * fetch a byte and set MAINCMD to it
+      * if byte is equal to SUBCMD:
+        * toggle RUNFLAG
+      * otherwise:
+        * if RUNFLAG is nonzero:
+          * current byte is fillVal
+          * fetch a byte to get fillLen
+          * write fillVal to PPUDATA (fillLen - 1) times
+        * otherwise:
+          * write previously fetched byte to PPUDATA

@@ -1,0 +1,39 @@
+********************************************************************************
+*         City Adventure Touch: Mystery of Triangle Translation Tools          *
+********************************************************************************
+
+This is a set of tools designed to insert text into the Famicom game City
+Adventure Touch: Mystery of Triangle. It includes a complete build system to
+insert the English-translated script created by Filler
+(http://projects.mattsmessyroom.com/). Though I've only bothered to set this up
+for *nix environments, it would be straightforward to get it to run on Windows.
+
+To build the game, you must first have a ROM image of the original game.
+*** The ROM image must not be headered! *** (purely due to laziness)
+If the ROM has an iNES header, you must remove the first 16 bytes before
+building. Ensure that your ROM's MD5 sum is f15b9f1e8a5347f62d0fb7653d81815c
+before continuing.
+
+Rename the ROM to "cat_noheader.nes", and place it in the cat/ subdirectory.
+Then:
+
+$ cd cat
+$ ./build.sh
+
+Assuming everything went well, this will build all the tools and output the
+translated ROM as "cat_build.nes" in the same folder.
+
+A few notes:
+  * This project uses cc65 (http://www.cc65.org/) to assemble some assembly
+    language modifications -- see the cat/asm/ directory. Binaries built
+    on a 64-bit Debian system are provided in cat/asm/bin, and are used
+    used by the build system by default. If your system doesn't support these
+    binaries, you will need to modify the PATH assignment in build.sh to point
+    to your own cc65 binaries.
+  * libpng is required to build the tools related to graphics editing.
+  * The English script, along with the commented-out Japanese original, is
+    contained in cat/cat_script_en.txt. This translation was created by Filler
+    and, per the README included in the original project release, is licensed
+    under the Creative Commons Attribution-NonCommercial license
+    (https://creativecommons.org/licenses/). It is used here without
+    modification.

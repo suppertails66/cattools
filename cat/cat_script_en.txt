@@ -1,0 +1,1183 @@
+//******************************************************************************
+// City Adventure Touch English script
+//******************************************************************************
+
+//#LOADTABLE("table/cat_table.tbl")
+#LOADTABLE("table/cat_table_en.tbl")
+
+//******************************************************************************
+// Startup screen
+//******************************************************************************
+
+#STARTBLOCK($3e83, $13D, 0)
+// destination PPU address
+<$C2><$20>
+// width
+<$1B>
+// height
+<$0A>
+// content
+{WINNERS DON'T SELL REPROS}
+<$61>                          
+This is a free, unofficial 
+       translation.        
+ It should not be sold or  
+   otherwise distributed   
+    except as a patch.     
+<$61>                          
+  Translation      Filler  
+  Hacking          Supper  
+
+//******************************************************************************
+// Character names on status bar
+//******************************************************************************
+
+#STARTBLOCK($14e49, $8, 0)
+//たつや　　　　　
+Tatsuya 
+
+#STARTBLOCK($14e5d, $8, 0)
+//かずや　　　　　
+Kazuya  
+
+//******************************************************************************
+// Character names on status bar password display (Start + Select).
+//******************************************************************************
+
+#STARTBLOCK($14f07, $60, 0)
+//　　　　　たつや　　　　　　　　　　　　　　　　　　　　　　　　
+//　　　　　かずや　　　　　　　　　　　　　　　　　　　　　　　　
+//　　　　　みなみ　　　　　　　　　　　　　　　　　　　　　　　　
+ Tatsuya                        
+ Kazuya                         
+ Minami        
+
+// This really belongs with the assembly edits, but that takes longer:
+// move these strings (and the generated passwords) up a line to resolve
+// issues with glitchy sprite-0 split causing the very bottom row to display
+// letters like "j" and "q" incorrectly
+
+// the above strings
+#STARTBLOCK($14d00, $2, 0)
+<$E0><$24>
+#STARTBLOCK($14d05, $2, 0)
+<$40><$24>
+#STARTBLOCK($14d0a, $2, 0)
+<$60><$24>
+#STARTBLOCK($14d0f, $2, 0)
+<$80><$24>
+#STARTBLOCK($14d14, $2, 0)
+<$A0><$24>
+#STARTBLOCK($14d19, $2, 0)
+<$C0><$24>
+
+// the generated passwords
+#STARTBLOCK($17295, $1, 0)
+<$49>
+#STARTBLOCK($172A0, $1, 0)
+<$89>
+#STARTBLOCK($172A7, $1, 0)
+<$C9>
+
+//******************************************************************************
+// Password screen prompts.
+// Originals are fixed at 12 bytes; new ones are 16 bytes.
+// Ideally, these would be 18 bytes so we could fit in "X's Password", but the
+// game copies these to a 16-byte RAM buffer before sending them to the PPU
+// for some reason, and the game really isn't worth the effort it would take to
+// reprogram this.
+//******************************************************************************
+
+// put longer English strings at end of bank
+#SETFREEBLOCK($17b80, $480, 0)
+
+#STARTBLOCK($17450, $0, 0, $1744A)
+//たつやの　あいことは゛　
+//Tatsuya's Password
+ Tatsuya's Code 
+
+#STARTBLOCK($1745C, $0, 0, $1744C)
+//かす゛やの　あいことは゛
+//Kazuya's Password 
+ Kazuya's Code  
+
+#STARTBLOCK($17468, $0, 0, $1744E)
+//みなみの　あいことは゛　
+//Minami's Password 
+ Minami's Code  
+
+//******************************************************************************
+// For perfectionism's sake, correct some mistakes in the English text
+//******************************************************************************
+
+#STARTBLOCK($14dc7, $12, 0)
+//PASS<$01>WORD<$01>CONTINUE
+PASSWORD<$01>CONTINUE<$01>
+
+//******************************************************************************
+// Dialogue (in houses, etc.).
+// Max size: 10x10.
+// Automatic line wrapping is applied.
+//
+// Note: linebreaks may be used _only_ on "static" messages (printed during
+// the screen transition, not after it's loaded). Non-static messages must be
+// padded to the maximum line length with spaces.
+//******************************************************************************
+
+// block data offset, block size, isInFixedBank?, pointer table offset
+// (optional)
+#STARTBLOCK($966, $94B, 0, $8B8)
+
+// use end of fixed bank for extra space
+#SETFREEBLOCK($1F630, $868, 1)
+
+// $966
+[END]
+
+// $967
+// NONSTATIC
+//このまちに　くるのは　はし゛めてかい、あふ゛ないから　いいものをあけ゛るよ[END]
+//Is this your first time in this town? It's dangerous so I'll give you something useful.[END]
+Is this   
+your first
+time in   
+this town?
+It's dang-
+erous, so 
+I'll give 
+you some- 
+thing use-
+ful.[END]
+
+// $98D
+//おみせた゛と　おもったて゛しょうさ゛んねんて゛した[END]
+//I'm sorry, you probably thought this was a shop.[END]
+I'm sorry,
+you prob- 
+ably      
+thought   
+this was a
+shop.[END]
+
+// $9A7
+//きたの　はす゛れに　かせきのもりか゛　あるといういいつたえか゛　あるよ[END]
+//There are stories of a petrified forest on the northern outskirts.[END]
+There are[BR]
+stories of
+a petri-[BR]
+fied for-[BR]
+est on the
+northern[BR]
+outskirts.[END]
+
+// $9CB
+//みなみの　はす゛れに　おてらの　まちか゛　あるという　はなしか゛ある[END]
+//I've heard talk of a temple town on the southern outskirts.[END]
+I've heard
+talk of a[BR]
+temple[BR]
+town on[BR]
+the south-
+ern out-[BR]
+skirts.[END]
+
+// $9EE
+//けいけんちは　たいせつに　するんた゛よ[END]
+//You should value experience.[END]
+You should
+value ex- 
+perience.[END]
+
+// $A02
+//まちの　なかには　けいけんちを　あけ゛るための　と゛うし゛ょう　か゛　あるよ[END]
+//There are dojo's that give experience among the towns.[END]
+There are[BR]
+dojos that
+give ex-[BR]
+perience[BR]
+among the[BR]
+towns.[END]
+
+// $A29
+//か゛っこうの　なかに　いいところか゛　あるよ[END]
+//There's a nice place inside the school.[END]
+There's a[BR]
+nice place
+inside the
+school.[END]
+
+// $A40
+//この　まちには　６ひ゜きの　ぬしか゛　いるという[END]
+//They say there are 6 guardians in this town.[END]
+They say[BR]
+there are[BR]
+six guard-
+ians in[BR]
+this town.[END]
+
+// $A59
+//あいてむは　おみせに　うっているとは　かき゛らないよ[END]
+//Item's are not limited to being sold in shops.[END]
+Items are[BR]
+not limit-
+ed to be-[BR]
+ing sold[BR]
+in shops.[END]
+
+// $A74
+//うえうえ　したした　みき゛　ひ　た゛り[END]
+//Up, up, down, down, right, left.[END]
+Up, up,[BR]
+down,[BR]
+down,[BR]
+right,[BR]
+left.[END]
+
+// $A88
+//、、、、、[END]
+//.....[END]
+.....[END]
+
+// $A8E
+//ＴＯＵＣＨ２は　みにいったかい[END]
+//Did you go to see Touch 2?[END]
+Did you go
+to see[BR]
+Touch 2?[END]
+
+// $A9E
+//あまり　ふぁみこんを　やりすき゛ないようにね[END]
+//Take care not to play too much Famicom okay.[END]
+Take care[BR]
+not to[BR]
+play too[BR]
+much Fami-
+com, okay?[END]
+
+// $AB5
+//１たす１は２た゛よね[END]
+//1 plus 1 is 2 you know.[END]
+One plus[BR]
+one is[BR]
+two, you[BR]
+know.[END]
+
+// $AC0
+//ＰＲＯＳー８６　って　しってる[END]
+//Do you know PROS-86?[END]
+Do you[BR]
+know PROS-
+86?[END]
+
+// $AD0
+//はし゛めは　きたのほうの　まちにいくと　いいよ[END]
+//You should start by going to the town to the north.[END]
+You should
+start by[BR]
+going to[BR]
+the town[BR]
+to the[BR]
+north.[END]
+
+// $AE8
+//あいてむは　おなし゛ねた゛んて゛うってないよ、　やすいところか゛あるかも[END]
+//Items don't always sell for the same price. There may be a cheaper place.[END]
+Items[BR]
+don't al-[BR]
+ways sell[BR]
+for the[BR]
+same[BR]
+price.[BR]
+There may[BR]
+be cheaper
+places.[END]
+
+// $B0D
+//はいれない　は゛しょには　なにかひみつか゛　あるのかも[END]
+//Perhaps there is some secret regarding places you cannot go.[END]
+Perhaps[BR]
+there is[BR]
+some sec-[BR]
+ret re-[BR]
+garding[BR]
+places you
+cannot go.[END]
+
+// $B29
+//し゛んし゛ゃは　おか゛んて゛みるかちか゛ある[END]
+//It's worth your while to try praying at shrines.[END]
+It's worth
+your while
+to try[BR]
+praying at
+shrines.[END]
+
+// $B40
+// NONSTATIC
+//かんつ゛めか゛たへ゛たいんた゛けと゛、、、、[END]
+//I'd like some canned food...[END]
+I'd like  
+some can- 
+ned food  
+...[END]
+
+// $B57
+// NONSTATIC
+//ありか゛とう　　ＳＨＯＰ　ＷＡＯに　はいってこ゛らん[END]
+//Thank you. Please enter SHOP WAO.[END]
+Thank you.
+Please en-
+ter SHOP  
+WAO.[END]
+
+// $B72
+//しゅくた゛いは　ちゃんと　やったかい[END]
+//Did you do your homework like you're supposed to?[END]
+Did you do
+your home-
+work like 
+you're su-
+pposed to?[END]
+
+// $B85
+//か゛っこうには　は゛けものか゛　いるそ゛[END]
+//There's a monster at the school.[END]
+There's a[BR]
+monster at
+the[BR]
+school.[END]
+
+// $B9A
+//と゛こかに　こいぬか゛　とらわれて　いるそ゛[END]
+//Puppies are imprisoned someplace.[END]
+A puppy is
+imprisoned
+someplace.[END]
+
+// $BB1
+//か゛っこうの　　は゛けものは　さひ゛つかせるといい[END]
+//You should leave the school's monster alone.[END]
+You should
+leave the[BR]
+school's[BR]
+monster[BR]
+alone.[END]
+
+// $BCB
+//ちゃんと　へ゛んきょう　してる[END]
+//I'm studying like I'm supposed to.[END]
+I'm study-
+ing like[BR]
+I'm sup-[BR]
+posed to.[END]
+
+// $BDB
+//きをつけるんた゛よ、ちかくに　　は゛けものか゛いる[END]
+//Be careful. There's a monster nearby.[END]
+Be care-[BR]
+ful.[BR]
+There's a[BR]
+monster[BR]
+nearby.[END]
+
+// $BF5
+//あいつを　たおすために　ひつような　あいてむを　もっているかい[END]
+//Do you have the item necessary to beat them?[END]
+Do you[BR]
+have the[BR]
+item nec-[BR]
+essary to[BR]
+beat them?[END]
+
+// $C15
+//か゛っこうの　なかには　たおすのに　あいてむか゛いる　てきか゛　いるそ゛[END]
+//Within the school is an enemy with the item to defeat them.[END]
+Within the
+school is[BR]
+an enemy[BR]
+with the[BR]
+item to[BR]
+defeat[BR]
+them.[END]
+
+// $C3A
+//そうこの　と゛こかを　なく゛るとなにかか゛おきるらしい[END]
+//It appears something will happen if you hit someplace in the storeroom/storehouse/warehouse.[END]
+It appears
+something[BR]
+will hap-[BR]
+pen if you
+hit some-[BR]
+place in[BR]
+the ware-[BR]
+house.[END]
+
+// $C56
+// NONSTATIC
+// はいれなかった is past tense, right?
+//はいれなかった　みちに　はいってこ゛らん　　それから　あとて゛　もういちと゛　おいて゛[END]
+//Try to enter the path you cannot enter and come here once more.[END]
+Try to en-
+ter the   
+path you  
+couldn't  
+enter and 
+come here 
+once more.[END]
+
+// $C82
+//この　かか゛みをもっていくと　いい[END]
+//You may take this mirror.[END]
+You may   
+take this 
+mirror.[END]
+
+// $C94
+// NONSTATIC (probably)
+//いっしょに　あそは゛ないかい[END]
+//Will you play with me?[END]
+Will you  
+play with 
+me?[END]
+
+// $CA3
+// NONSTATIC (probably)
+// message for sending letter at post office
+//たしかに　おあ　す゛かりします[END]
+//Certainly, I will take that.[END]
+Certainly,
+I will    
+take that.[END]
+
+// $CB3
+//いらっしゃいませ[END]
+//Welcome.[END]
+Welcome.[END]
+
+// $CBC
+//きの　ほらあなにはいるには　おのを　てにもたないと　いけない[END]
+//You cannot enter the tree cave without the ax.[END]
+You cannot
+enter the[BR]
+tree cave[BR]
+without[BR]
+the ax.[END]
+
+// $CDB
+//か゛けの　ほらあなに　はいるにはしゃへ゛るか゛　いるよ[END]
+//There is a chant to enter the cliff cave.[END]
+There is a
+chant to[BR]
+enter the[BR]
+cliff[BR]
+cave.[END]
+
+// $CF7
+//もりの　はす゛れの　せいんとに　あったかい[END]
+//Did you (meet?) the saint on the forest outskirts?[END]
+Did you[BR]
+meet the[BR]
+saint on[BR]
+the forest
+outskirts?[END]
+
+// $D0D
+//この　もりには　はいれない　みちか゛　あるというはなしか゛ある[END]
+//They say there is a path you cannot travel in this forest.[END]
+They say[BR]
+there is[BR]
+a path you
+cannot[BR]
+travel in[BR]
+this for-[BR]
+est.[END]
+
+// $D2D
+//うみへ゛の　し゛んし゛ゃは　なんかいも　おまいりしないと　こ゛りやくか゛ないよ[END]
+//If you don't pray repeatedly at the shrine on the beach, your prayers will not be answered.[END]
+If you[BR]
+don't pray
+repeatedly
+at the[BR]
+shrine on[BR]
+the beach,
+your pray-
+ers will[BR]
+not be[BR]
+answered.[END]
+
+// $D55
+// message for failing forest-shovel guessing game
+//さ゛んねんて゛した　はす゛れた゛よ[END]
+//That's too bad. You didn't win.[END]
+That's too
+bad. You[BR]
+didn't[BR]
+win.[END]
+
+// $D67
+//なにしに　きたんた゛い[END]
+//What did you come here for.[END]
+What did  
+you come  
+here for?[END]
+
+// $D73
+// context: a whole bunch of NPCs give you a whole bunch of different keys after
+// you mail a letter at the post office
+//てか゛みは　うけとったよ、これをもっていくといい[END]
+//I received a letter. You should take this.[END]
+I got your
+letter.   
+You should
+take this.[END]
+
+// $D8C
+// context: hint for the puppy at the start of the winter forest area, which is
+// rescued by using the mirror on it
+//かせきに　なったものは　し゛ふ゛んの　すか゛たをみせるといいらしい[END]
+//It seems you should show your figure to things that have been fossilized.[END]
+It seems[BR]
+you should
+show pet-[BR]
+rified[BR]
+things[BR]
+their own[BR]
+figure.[END]
+
+// $DAE
+// I think "saint" is the game's term for the NPC characters?
+//となりの　せいんとか゛　なにか　いいことを　おしえてくれるよ[END]
+//The saint next door will tell you something good.[END]
+The saint[BR]
+next door[BR]
+will tell[BR]
+you some-[BR]
+thing[BR]
+good.[END]
+
+// $DCD
+//はやく　あは゜ーとに　とし゛こめられている　こいぬを　たすけておやり[END]
+//Hurry and help the puppy shut away in an apartment.[END]
+Hurry and[BR]
+help the[BR]
+puppy shut
+away in an
+apartment.[END]
+
+// $DF0
+// context: hint on how to enter the apartment building
+// there are six apartment buildings, A1 to C2, which must be entered in
+// alphanumerical order (A1, A2, B1, B2, C1, C2) to access the boss
+//あは゜ーとは　　し゛ゅんは゛んにまわると　なにかおこるらしい[END]
+//It seems something will happen if you turn around in the apartment in order.[END]
+It seems[BR]
+something[BR]
+will hap-[BR]
+pen if you
+visit the[BR]
+apartments
+in order.[END]
+
+// $E0F
+//ひた゛り　みき゛うえ　ひた゛り　みき゛　うえ、、、、、[END]
+//Left, upper-right, left, right, up....[END]
+Left, up-[BR]
+per-right,
+left,[BR]
+right,[BR]
+up....[END]
+
+// $E2B
+//あは゜ーとには　かたい　おは゛けか゛　いるらしい[END]
+//There seems to be a difficult monster in the apartment.[END]
+There[BR]
+seems to[BR]
+be a dif-[BR]
+ficult[BR]
+monster in
+the apart-
+ment.[END]
+
+// $E44
+//もえそうな　お　は゛けは　もやしてたいし゛て゛きるはす゛た゛よ[END]
+//You should be able to burn to death monsters who appear burnable.[END]
+You should
+be able to
+burn to[BR]
+death mon-
+sters that
+appear[BR]
+burnable.[END]
+
+// $E64
+//かなつ゛ちは　もっているかい、たふ゛ん　ひつようた゛よ[END]
+//Do you have a hammer? You'll probably need one.[END]
+Do you[BR]
+have a[BR]
+hammer?[BR]
+You'll[BR]
+probably[BR]
+need one.[END]
+
+// $E80
+//おやおや　なにかようし゛かい[END]
+//Oh my, do you need something.[END]
+Oh my, do[BR]
+you need[BR]
+something?[END]
+
+// $E8F
+//こんなところて゛うろうろしていないて゛　はやくいきなさい[END]
+//Don't loiter here. Hurry and get going.[END]
+Don't loi-
+ter here. 
+Hurry and 
+get going.[END]
+
+// $EAC
+//きたまくらに　きをつけるんた゛よ[END]
+//Beware of sleeping with your head to the north.[END]
+Beware of[BR]
+sleeping[BR]
+with your[BR]
+head to[BR]
+the north.[END]
+
+// $EBD
+//この　さきの　うみへ゛の　し゛んし゛ゃには　せ゛ひ　おまいりしたほうか゛いいよ[END]
+//You should definitely pray at the shrine at the beach up ahead.[END]
+You should
+definitely
+pray at[BR]
+the shrine
+at the[BR]
+beach up[BR]
+ahead.[END]
+
+// $EE5
+//この　まちの　いりく゛ちと　て゛く゛ちは　いっ　ほ゜うつうこう　た゛よ[END]
+//This town's entrance and exit are one way streets.[END]
+This[BR]
+town's en-
+trance and
+exit are[BR]
+one-way[BR]
+streets.[END]
+
+// $F09
+//このまちには　きょた゛いな　にんき゛ょうか゛　いる[END]
+//There's a huge doll in this town.[END]
+There's a[BR]
+huge doll[BR]
+in this[BR]
+town.[END]
+
+// $F23
+//めには　めを　にんき゛ょうには　にんき゛ょうを[END]
+//An eye for an eye, a doll for a doll.[END]
+An eye for
+an eye, a[BR]
+doll for a
+doll.[END]
+
+// $F3B
+//みき゛まわりに　いけは゛　この　まちの　ちゅうしんふ゛へ　いける[END]
+//If you go in a clockwise rotation you can reach the heart of the town.[END]
+If you go[BR]
+in a[BR]
+clockwise[BR]
+rotation,[BR]
+you can[BR]
+reach the[BR]
+heart of[BR]
+the town.[END]
+
+// $F5C
+//この　まちに　ようこそ、ふるいまちなみを　ゆっくり　みてよ[END]
+//Welcome to this town. Take your time appreciating the old shops.[END]
+Welcome to
+this town.
+Take your[BR]
+time ap-[BR]
+preciating
+the old[BR]
+shops.[END]
+
+// $F7A
+//こいんは　もうみつけたかい、このちかくに　あるはす゛た゛よ[END]
+//Have you found the coin yet. It should be near here.[END]
+Have you[BR]
+found the[BR]
+coin yet?[BR]
+It should[BR]
+be near[BR]
+here.[END]
+
+// $F98
+//このまちの　て゛く゛ちには　き　か゛　うえてある[END]
+//This town's exit is planted with trees.[END]
+This[BR]
+town's[BR]
+exit is[BR]
+planted[BR]
+with[BR]
+trees.[END]
+
+// $FB1
+//この　さきの　うみへ゛の　し゛んし゛ゃには　せ゛ひ　おまいりすると　いい[END]
+//You should definitely pray at the shrine at the beach up ahead.[END]
+You should
+definitely
+pray at[BR]
+the shrine
+at the[BR]
+beach up[BR]
+ahead.[END]
+
+// $FD6
+//あなたは　かみをしんし゛ますか[END]
+//Do you believe in God?[END]
+Do you be-
+lieve in[BR]
+God?[END]
+
+// $FE6
+//こいぬは　８ひ゜き　たすけたかい[END]
+//Have you rescued 8 puppies?[END]
+Have you[BR]
+rescued[BR]
+eight[BR]
+puppies?[END]
+
+// $FF7
+//となりの　ちゅうかか゛いにも　　いくといい[END]
+//You should visit Chinatown next door.[END]
+You should
+visit Chi-
+natown[BR]
+next door.[END]
+
+// $100D
+//となりの　ちゅうかか゛いに　ひつような　ものか゛ある[END]
+//There is something necessary in Chinatown next door.[END]
+There is[BR]
+something[BR]
+necessary[BR]
+in China-[BR]
+town next[BR]
+door.[END]
+
+// $1028
+//みき゛へ　いけ　は゛　ふゆの　もりに　ゆける[END]
+//If you go to the right you can reach winter forest.[END]
+If you go[BR]
+to the[BR]
+right, you
+can reach[BR]
+winter[BR]
+forest.[END]
+
+// $103F
+//ひた゛りに　いけは゛　もりの　はす゛れ[END]
+//The forest's outskirts are to the left.[END]
+The for-[BR]
+est's out-
+skirts are
+to the[BR]
+left.[END]
+
+// $1053
+//この　もりの　きの　おは゛けは　もやしてしまえ　は゛　いい[END]
+//You should burn this forest's tree monster.[END]
+You should
+burn this[BR]
+forest's[BR]
+tree mon-[BR]
+ster.[END]
+
+// $1071
+//このしたの　みちは　いっほ゜うつうこうた゛から　したには　いけないよ[END]
+//The street below here is one way so you cannot go down.[END]
+The street
+below here
+is one-[BR]
+way, so[BR]
+you cannot
+go down.[END]
+
+// $1094
+//この　せいなる　へ゛るて゛　そとの　おは゛けか゛たおせるよ、もっておゆき[END]
+//You can defeat the monsters outside with this holy bell. Take it with you.[END]
+You can[BR]
+defeat the
+monsters[BR]
+outside[BR]
+with this[BR]
+holy bell.
+Take it[BR]
+with you.[END]
+
+// $10B9
+//この　へ゛るを　あけ゛よう　あとて゛　やくにたつた゛ろうから　たいせつにね[END]
+//This bell will be helpful, so after I give it to you, be sure to take care of it.[END]
+This bell 
+will be   
+helpful,  
+so after I
+give it to
+you, be   
+sure to   
+take care 
+of it.[END]
+
+// $10DF
+//きょうかいの　おは゛けを　たおすには　せいなるゆひ゛わか゛　いる[END]
+//There is a holy ring to defeat the church's monster.[END]
+There is a
+holy ring 
+to defeat 
+the       
+church's  
+monster.[END]
+
+// $1100
+//た゛いせいと゛うに　はいるには　この　ほうせき　か゛　いるそ゛[END]
+//This gem is for entering the cathedral.[END]
+This gem  
+is for en-
+tering the
+cathedral.[END]
+
+// $1120
+//きょうかいの　おは゛けを　たおしたいのた゛ろう、これを　もっていくといい[END]
+//You want to defeat the church's monster, don't you? You should take this.[END]
+You want  
+to defeat 
+the       
+church's  
+monster,  
+don't you?
+You should
+take this.[END]
+
+// $1145
+//もういっけんの　くすりや　には　ひみつか゛　ある[END]
+//It looks like a pharmacy, but it has a secret.[END]
+It looks  
+like a    
+pharmacy, 
+but it has
+a secret.[END]
+
+// $115E
+// displayed in a "beauty parlor"
+// was くすりや mistakenly left out of the translation?
+//このまちの　みんなの　あいそか゛よくなったら　くすりやへ　いってこ゛らん[END]
+//Try going if you (want to) improve the mood of everyone in town.[END]
+Try going 
+to the    
+pharmacy  
+if you    
+want to   
+improve   
+the mood  
+of every- 
+one in    
+town.[END]
+
+// $1183
+//おたより　おまちしていまーす[END]
+//I look forward to hearing from you.[END]
+I look[BR]
+forward to
+hearing[BR]
+from you.[END]
+
+// $1192
+//この　まちの　うこ゛く　みす゛たまりは　てきし゛ゃないそ゛[END]
+//The moving puddles on the street are not enemies.[END]
+The moving
+puddles on
+the street
+are not[BR]
+enemies.[END]
+
+// $11B0
+//この　まちの　うこ゛く　みす゛たまりを　あつめると　なにかおこるらしい[END]
+//It appears something will happen if you collect the moving puddles.[END]
+It appears
+something[BR]
+will hap-[BR]
+pen if you
+collect[BR]
+the mov-[BR]
+ing pud-[BR]
+dles.[END]
+
+// $11D4
+//みす゛を　くむのに　つかうものはきまっているよね[END]
+//You must use something to scoop the water of course.[END]
+You must[BR]
+use some-[BR]
+thing to[BR]
+scoop the[BR]
+water, of[BR]
+course.[END]
+
+// $11ED
+//さるかに　か゛っせんを　しっているかい[END]
+//Do you know the story of the monkey and the crab?[END]
+Do you    
+know the  
+story of  
+the monkey
+and the   
+crab?[END]
+
+// $1201
+//し゛んし゛ゃの　かにの　おは゛けを　たおすには　くた゛ものか゛　いる[END]
+//There is a fruit to defeat the crab monster in the shrine.[END]
+There's a[BR]
+fruit to[BR]
+defeat the
+crab mon-[BR]
+ster[BR]
+that's in[BR]
+the[BR]
+shrine.[END]
+
+// $1224
+//そうこか゛いの　こんてなには　なにか　ひみつか゛あるらしい[END]
+//It seems there's some secret to the containers at the warehouse district.[END]
+It seems[BR]
+there's[BR]
+some sec-[BR]
+ret to the
+containers
+at the[BR]
+warehouse[BR]
+district.[END]
+
+// $1242
+//か゛っこうへ　はいるなら　ないふを　かって　いくと　いい[END]
+//You should buy a knife if you want to enter the school.[END]
+You should
+buy a[BR]
+knife if[BR]
+you want[BR]
+to enter[BR]
+the[BR]
+school.[END]
+
+// These lines are at the end of the script, but aren't in the pointer table.
+// Don't know if there are hardcoded references to them somewhere, or if
+// they're just outright unused.
+// (haven't seem them anywhere in the game after playing it, so hopefully the
+// latter?)
+//６ひ゜きの　ぬしは　それそ゛れ　たおすのに　ひつような　あいてむか゛ある[END]
+//There's a necessary item in order to defeat the 6 guardians.[END]
+//たへ゛ものは　もっていると　いいことか゛　あるよ[END]
+//It may be good if you have food.[END]
+//ここは　まちの　まんなか　あたりた゛よ[END]
+//This is the towns central area.[END]
+
+
+//******************************************************************************
+// Status bar messages.
+// Max size: 8x4
+// Automatic line wrapping is applied; translated text must be padded with
+// spaces.
+// These are copied to a RAM buffer before printing, so there's a hard limit of
+// 32 bytes per message.
+//******************************************************************************
+
+// block data offset, block size, isInFixedBank?, pointer table offset
+// (optional)
+#STARTBLOCK($1512B, $182, 0, $150F7)
+
+// $1512B
+// Used to blank the bar when no message is displayed
+//　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　[END]
+//          
+//          
+//          
+//  [END]
+// the bar gets blanked in code regardless of this message's contents, so
+// why waste space on it
+[END]
+
+// $1514C
+//ねえねえ　ふたりとも　りゅっくさっくを　かったら[END]
+//Hey, what if you two bought backpacks.[END]
+If you two
+got back- 
+packs...?[END]
+
+// $15165
+// context: displayed when trying to enter a closed shop
+//おやすみ　みたいね[END]
+//They look to be resting.[END]
+Looks like
+it's their
+day off.[END]
+
+// $1516F
+//はいるのは　やめようよぉ[END]
+//Let's not go in there.[END]
+Let's not 
+go in     
+there.[END]
+
+// $1517C
+// This shows up in the toy store near the start of the game.
+// I'm interpreting it as a general hint that "you can buy things and give them
+// to people" ("saint" being the game's term for NPCs), since it doesn't seem
+// to point to any particular puzzle solution.
+//せいんとに　なにか　おみやけ゛をかわない[END]
+//Why don't we buy a souvenir for the saint.[END]
+Let's shop
+for the   
+saints.[END]
+
+// $15191
+//かんつ゛めや　みたいね　それにしても　たっかーい[END]
+//They appear to sell canned food. It's expensive though.[END]
+Their can-
+ned food  
+is pricey.[END]
+
+// $151AA
+//おもしろそうな　ものを　うっているね[END]
+//They're selling some interesting things.[END]
+They sell 
+interest- 
+ing stuff.[END]
+
+// $151BD
+//なんた゛か　こわくない[END]
+//I'm not afraid at all.[END]
+I'm not   
+afraid at 
+all![END]
+
+// $151C9
+//もう　たっちゃんと゛うにかしてよ[END]
+//Jeez, please do something Ta-chan.[END]
+Jeez! Do  
+something,
+Ta-chan![END]
+
+// $151DA
+//もう　かっちゃんと゛うにかしてよ[END]
+//Jeez, please do something Ka-chan.[END]
+Jeez! Do  
+something,
+Ka-chan![END]
+
+// $151EB
+//　きゃっ[END]
+// Eek![END]
+ Eek![END]
+
+// $151F0
+//　いたーい[END]
+// Oww[END]
+ Oww![END]
+
+// $151F6
+//つかれたよ[END]
+//I'm pooped.[END]
+I'm poop- 
+ed.[END]
+
+// $151FC
+//あれ　そとに　　　て゛ちゃった[END]
+//Huh, we appeared outside.[END]
+Huh? We   
+appeared  
+outside.[END]
+
+// $1520C
+//るすみたいね[END]
+//It looks like they're out.[END]
+Looks like
+they're   
+out.[END]
+
+// $15213
+//た゛れも　いないみたいね[END]
+//It doesn't look like anyone is here.[END]
+Looks like
+no one's  
+here.[END]
+
+// $15220
+//あきや　みたいね[END]
+//It looks unoccupied.[END]
+It looks  
+unoccu-   
+pied.[END]
+
+// $15229
+//た゛れも　いないみたいね[END]
+//It doesn't look like anyone is here.[END]
+Looks like
+no one's  
+here.[END]
+
+// $15236
+//うあー　うみか゛みえる[END]
+//Whoa-, I can see the sea.[END]
+Whoaa! I  
+can see   
+the sea![END]
+
+// $15242
+//あいていない　みたいね[END]
+//It looks vacant.[END]
+It looks  
+vacant.[END]
+
+// $1524E
+//かき゛か゛　かかって　いるみたいね[END]
+//It appears to be locked.[END]
+It appears
+to be     
+locked.[END]
+
+// $15260
+//こ゛みを　あさって　と゛うするの[END]
+//What are you doing searching the trash.[END]
+Why are   
+you check-
+ing trash?[END]
+
+// $15271
+//なにか　いいことか゛　かいてあるの[END]
+//Something helpful is written.[END]
+Something 
+helpful's 
+written.[END]
+
+// $15283
+//て゛んちゅうに　のほ゛るの[END]
+//Climb the telephone pole?[END]
+Climb the 
+telephone 
+pole?[END]
+
+// $15291
+//いきと゛まり　みたいね[END]
+//It appears to be a dead end.[END]
+It appears
+to be a   
+dead end.[END]
+
+// $1529D
+//そこは　はいれないんし゛ゃない[END]
+//We can't go in there.[END]
+We can't  
+go in     
+there.[END]
+
